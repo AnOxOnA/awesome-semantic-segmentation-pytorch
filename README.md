@@ -3,7 +3,7 @@
 [![pytorch-image]][pytorch-url]
 [![lic-image]][lic-url]
 
-This project aims at providing a concise, easy-to-use, modifiable reference implementation for semantic segmentation models using PyTorch.
+This repository is created for mid-term project of DATA620004, Fudan University. The main part of the code is forked from https://github.com/Tramac/awesome-semantic-segmentation-pytorch, which implements a various of advanced deep learning models for the sematic segmentation task in pytorch. For our mid-term project, we train the BiSeNet model on cityscapes supervised by different loss functions and try to explore the influence brought by them. For the simplicity of reproduce, we will introduce how to install the package, how to train and evaluate the model as follows.
 
 <p align="center"><img width="100%" src="docs/weimar_000091_000019_gtFine_color.png" /></p>
 
@@ -27,32 +27,41 @@ python setup.py build develop
 ## Usage
 ### Train
 -----------------
-- **Single GPU training**
+- **Use CrossEntropy**
 ```
-# for example, train fcn32_vgg16_pascal_voc:
-python train.py --model fcn32s --backbone vgg16 --dataset pascal_voc --lr 0.0001 --epochs 50
+# for example, use single GPU and set batchsize as 8:
+python train.py --model bisenet --backbone resnet18 --dataset citys --lr 0.01 --epochs 80 --batch-size 8
 ```
-- **Multi-GPU training**
+
+- **Use Auxiliary Loss**
+```
+# for example, use single GPU and set batchsize as 8:
+python train.py --model bisenet --backbone resnet18 --dataset citys --lr 0.01 --epochs 80 --batch-size 8 --aux
+```
+
+- **Use Ohem CrossEntropy**
 
 ```
-# for example, train fcn32_vgg16_pascal_voc with 4 GPUs:
+# for example, use multi GPUs and set batchzie as 32:
 export NGPUS=4
-python -m torch.distributed.launch --nproc_per_node=$NGPUS train.py --model fcn32s --backbone vgg16 --dataset pascal_voc --lr 0.0001 --epochs 50
+python -m torch.distributed.launch --nproc_per_node=$NGPUS train.py --model bisenet --backbone resnet18 --dataset citys --lr 0.025 --epochs 100 --use-ohem True
 ```
 
 ### Evaluation
 -----------------
 - **Single GPU evaluating**
 ```
-# for example, evaluate fcn32_vgg16_pascal_voc
-python eval.py --model fcn32s --backbone vgg16 --dataset pascal_voc
+# for example, evaluate bisenet_resnet18_citys with single GPU:
+python eval.py --model bisenet --backbone resnet18 --dataset citys
 ```
 - **Multi-GPU evaluating**
 ```
-# for example, evaluate fcn32_vgg16_pascal_voc with 4 GPUs:
+# for example, evaluate bisenet_resnet18_citys_aux with 4 GPUs:
 export NGPUS=4
-python -m torch.distributed.launch --nproc_per_node=$NGPUS eval.py --model fcn32s --backbone vgg16 --dataset pascal_voc
+python -m torch.distributed.launch --nproc_per_node=$NGPUS eval.py --model bisenet --backbone resnet18 --dataset citys --aux
 ```
+
+
 ### Demo
 ```
 cd ./scripts
@@ -179,14 +188,6 @@ See [TEST](https://github.com/Tramac/Awesome-semantic-segmentation-pytorch/tree/
 ├── tests
 │   └── test_model.py
 ```
-
-## To Do
-- [x] add train script
-- [ ] remove syncbn
-- [ ] train & evaluate
-- [x] test distributed training
-- [x] fix syncbn ([Why SyncBN?](https://tramac.github.io/2019/04/08/SyncBN/))
-- [x] add distributed ([How DIST?](https://tramac.github.io/2019/04/22/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83-PyTorch/))
 
 ## References
 - [PyTorch-Encoding](https://github.com/zhanghang1989/PyTorch-Encoding)
