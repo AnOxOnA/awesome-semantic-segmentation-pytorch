@@ -76,6 +76,12 @@ python demo.py --model fcn32s_vgg16_voc --input-pic ./datasets/test.jpg
 │   └── train.py
 ```
 
+### Visiualization
+```
+cd ./runs
+tensorboard --logdir tensorboardx
+```
+
 ## Support
 
 #### Model
