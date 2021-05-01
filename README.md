@@ -175,14 +175,14 @@ python ade20k.py --download-dir ../datasets/ade
 ## Result
 - **PASCAL VOC 2012**
 
-|Methods|Backbone|TrainSet|EvalSet|crops_size|epochs|JPU|Mean IoU|pixAcc|
+|Loss|Backbone|TrainSet|EvalSet|Learning rate|epochs|JPU|Mean IoU|pixAcc|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|FCN32s|vgg16|train|val|480|60|✘|47.50|85.39|
-|FCN16s|vgg16|train|val|480|60|✘|49.16|85.98|
-|FCN8s|vgg16|train|val|480|60|✘|48.87|85.02|
-|FCN32s|resnet50|train|val|480|50|✘|54.60|88.57|
-|PSPNet|resnet50|train|val|480|60|✘|63.44|89.78|
-|DeepLabv3|resnet50|train|val|480|60|✘|60.15|88.36|
+|CrossEntropy|resnet18|train|val|0.01|80|✘|63.555|93.459|
+|CrossEntropy+aux|resnet18|train|val|0.01|80|✘|64.406|93.642|
+|Ohem|resnet18|train|val|0.025|100|✘|63.130|93.113|
+|Ohem+aux|resnet18|train|val|0.025|100|✘|63.724|93.044|
+
+
 
 Note: `lr=1e-4, batch_size=4, epochs=80`.
 
